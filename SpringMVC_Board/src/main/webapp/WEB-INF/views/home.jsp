@@ -28,7 +28,7 @@
 </head>
 <body>
 <h3>${exMsg}</h3>
-	<h1>Home.jsp-제발 되라 증말</h1>
+	<h1>Home.jsp-뭐라고쓸까</h1>
 	<form action="access" name="logFrm" method="post">
 		<table border="1">
 			<tr>
