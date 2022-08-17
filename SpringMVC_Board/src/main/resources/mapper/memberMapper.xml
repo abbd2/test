@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMemberDao 전용 Mapper: 회원관련 sql -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Mybatis 사용법 
+1. parameterType은 생략 가능
+2. parameterType이 bean(DTO)인 경우 #{필드명}
+3. parameterType이 변수인 경우 #{변수명}
+4. parameterType이 Map<key,value>인 경우 #{key}
+5. select제외한 나머지 태그는 resultType 명시 금지
+6. resultType이 bean또는 변수일때 일치되는 컬럼명에 저장한다. 
+ -->
+<!-- <mapper namespace="memberMapper">
+	<select id="access" resultType="boolean">
+		SELECT COUNT(*) FROM MEMBER WHERE M_ID=#{m_id} AND M_PWD=#{m_pwd}
+	</select>
+</mapper> -->
+<mapper namespace="com.board.icia.dao.IMemberDao">
+	<select id="access" parameterType="Member"  resultType="boolean">
+		SELECT COUNT(*) FROM MEMBER WHERE M_ID=#{m_id} AND M_PWD=#{m_pwd}
+	</select>
+	
+	<insert id="memberJoin" parameterType="Member">
+		INSERT INTO M VALUES(#{m_id},#{m_pwd},#{m_name},#{m_birth},#{m_addr},
+		                     #{m_phone},default)
+	</insert>
+	
+	
+	<select id="getSecurityPwd" resultType="String">
+		SELECT M_PWD FROM M WHERE M_ID=#{m_id}
+	</select>
+	
+	
+	<select id="getMemberInfo"  resultType="Member">
+		select * FROM MINFO WHERE M_ID=#{m_id}
+	</select>
+</mapper>

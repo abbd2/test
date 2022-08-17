@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<!-- DB config -->
+	<!-- <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig"> -->
+	<!-- <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" 
+		/> -->
+	<!-- <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE" 
+		/> -->
+	<!-- <property name="driverClassName" -->
+	<!-- value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" /> -->
+	<!-- <property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@127.0.0.1:1521:XE" 
+		/> -->
+	<!-- <property name="username" value="icia" /> -->
+	<!-- <property name="password" value="1111" /> -->
+	<!-- 히카리C pool 설정 : dbcp2 -->
+	<!-- <property name="minimumIdle" value="5" /> -->
+	<!-- <property name="maximumPoolSize" value="10" /> -->
+	<!-- <property name="connectionTimeout" value="300000"></property> -->
+	<!-- </bean> -->
+
+	<!--root-context.xml DB 설정 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy" />
+		<property name="url"
+			value="jdbc:log4jdbc:oracle:thin:@testoracle_high?TNS_ADMIN=D:/down/wallet" />
+		<!--db202112111721_high는 전자지갑 내의 tnsnames.ora 파일의 첫줄 참조 -->
+		<!--전자지갑을 사용해서 로컬에서 개발할때는 TNS_ADMIN=D:\\전자지갑 폴더/ -->
+		<property name="username" value="admin" />
+		<property name="password" value="!Wa494949555" />
+	</bean>
+
+	<!-- HikariCP config -->
+	<!-- <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" -->
+	<!-- destroy-method="close"> -->
+	<!-- <constructor-arg ref="hikariConfig" /> -->
+	<!-- </bean> -->
+	<!-- sqlSessionFactory :: mybatis사용 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation"
+			value="classpath:/mybatis-config.xml" />
+		<property name="mapperLocations"
+			value="classpath:/mapper/*.xml" />
+	</bean>
+
+	<!-- IMemberDao 인터페이스 검색을 패키지 등록 -->
+	<!-- 인테페이스와 매퍼를 이용해서 DAO구현체를 생성 IoC컨테이너에 등록 -->
+	<mybatis-spring:scan
+		base-package="com.board.icia.dao" />
+
+	<!-- SqlSessionTemplate 설정: Dao를 클래스 정의 -->
+	<bean id="tpl" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+</beans>
+
+
+
+
+
+
+
+
+
+
